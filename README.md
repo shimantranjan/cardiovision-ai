@@ -1,179 +1,444 @@
-<div align="center">
+# CardioVision AI
 
-# 🫀 CardioVision AI
+### Retinal Fundus Image Analysis for Cardiovascular Risk Research
 
-### AI-Assisted Cardiovascular Risk Screening from Retinal Fundus Images
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C?logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![TorchVision](https://img.shields.io/badge/TorchVision-Computer%20Vision-EE4C2C)](https://pytorch.org/vision/)
+[![Scikit--learn](https://img.shields.io/badge/scikit--learn-Machine%20Learning-F7931E?logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-Experiments-F37626?logo=jupyter&logoColor=white)](https://jupyter.org/)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?logo=github&logoColor=white)](https://github.com/shimantranjan/cardiovision-ai)
 
-**Deep Learning • Computer Vision • Explainable AI • Medical AI**
-
-![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
-![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-orange?logo=pytorch)
-![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-red?logo=opencv)
-![Jupyter](https://img.shields.io/badge/Jupyter-Research-orange?logo=jupyter)
-![GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)
-
-**Exploring whether retinal fundus images can provide useful signals for cardiovascular risk prediction.**
-
-</div>
+> **CardioVision AI** is a research-oriented medical AI system investigating whether retinal fundus photographs contain useful signals associated with cardiovascular risk.
 
 ---
 
-## 🔍 About
+## Overview
 
-**CardioVision AI** is a research-oriented medical AI project that uses **retinal fundus photography and deep learning** to investigate cardiovascular risk.
+The retina provides a non-invasive view of the body's microvascular structure.  
+CardioVision AI explores the relationship between **retinal appearance, vascular characteristics, and cardiovascular-related risk indicators** using computer vision and machine learning.
 
-The retina provides a non-invasive view of the body's microvasculature. CardioVision AI explores whether retinal features, vascular characteristics, and clinical information can be combined to estimate cardiovascular risk.
+The project combines:
 
-> **Retinal Image → AI Analysis → Cardiovascular Risk Prediction**
+- Retinal fundus image analysis
+- Deep learning with EfficientNet
+- Retinal vascular feature extraction
+- Classical machine learning
+- Multimodal feature fusion
+- Explainable AI
+- Threshold optimization
+- Patient-level evaluation
 
----
+### Research Pipeline
 
-## 🏗️ System Architecture
+```text
+Retinal Fundus Image
+        │
+        ▼
+Image Preprocessing
+        │
+        ▼
+Deep Learning Feature Extraction
+        │
+        ├───────────────┐
+        ▼               ▼
+EfficientNet-B0    Vascular Features
+        │               │
+        └───────┬───────┘
+                ▼
+        Feature Fusion
+                │
+                ▼
+       Cardiovascular Risk
+          Classification
+                │
+        ┌───────┴────────┐
+        ▼                ▼
+ Performance        Explainability
+ Evaluation           Analysis
+Key Objectives
+1. Retinal Image Analysis
 
-```mermaid
-flowchart LR
+Develop a deep learning pipeline capable of learning visual representations from retinal fundus photographs.
 
-A[👁️ Retinal Fundus Image]
---> B[Image Preprocessing]
+2. Vascular Phenotyping
 
-B --> C[🧠 Deep Learning Model]
+Extract quantitative characteristics from retinal vasculature and investigate their predictive value.
 
-C --> D[Retinal Features]
+3. Multimodal Learning
 
-D --> E[🩸 Vessel Analysis]
+Combine image-derived information with structured retinal/clinical features.
 
-E --> F[Multimodal Fusion]
+4. Explainable AI
 
-M[Clinical Metadata<br/>Age • Sex • Risk Factors]
---> F
+Investigate which retinal regions and vascular characteristics influence model predictions.
 
-F --> G[❤️ Risk Prediction]
+5. Reliable Evaluation
 
-G --> H[📊 Risk Score]
+Evaluate models using clinically relevant classification metrics rather than relying only on accuracy.
 
-G --> I[🔍 Explainability]
+Dataset
 
-🚀 Key Features
-🧠 Deep Learning using EfficientNet
-👁️ Retinal fundus image analysis
-🩸 Retinal vessel analysis
-🧬 Multimodal image + clinical data fusion
-🔍 Explainable AI with Grad-CAM & SHAP
-📊 Clinical-style risk visualization
-🛡️ Calibration & uncertainty estimation
-🌍 External validation & subgroup analysis
-📊 Current Results
-EfficientNet-B0 — Improved Model
+CardioVision AI currently uses the China-Fundus-Carotid Intima-Media Thickness (CIMT) dataset.
+
+Property	Value
+Patients	2,903
+Fundus Images	5,806
+Eyes	Bilateral
+Image Type	Retinal Fundus Photography
+Target	CIMT-based cardiovascular-related classification
+Input Resolution	512 × 512
+Classes	Normal / Abnormal
+Dataset Split
+Split	Patients
+Training	2,322
+Validation	290
+Test	291
+Total	2,903
+
+Important: Patient-level splitting is used to reduce the possibility of information leakage between training, validation, and test sets.
+
+Model Architecture
+
+The primary deep learning backbone is EfficientNet-B0 using pretrained ImageNet weights.
+
+                 ┌──────────────────────┐
+                 │   Retinal Fundus     │
+                 │       Image          │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Image Preprocessing  │
+                 │ Resize / Normalize   │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │    EfficientNet-B0   │
+                 │   Feature Extractor  │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Learned Image        │
+                 │ Representation       │
+                 └──────────┬───────────┘
+                            │
+                 ┌──────────┴──────────┐
+                 │                     │
+                 ▼                     ▼
+       ┌─────────────────┐   ┌─────────────────┐
+       │ Vascular        │   │ Clinical /      │
+       │ Features        │   │ Structured Data │
+       └────────┬────────┘   └────────┬────────┘
+                │                     │
+                └──────────┬──────────┘
+                           ▼
+                 ┌──────────────────────┐
+                 │   Feature Fusion     │
+                 └──────────┬───────────┘
+                            │
+                            ▼
+                 ┌──────────────────────┐
+                 │ Risk Classification  │
+                 └──────────────────────┘
+Machine Learning Components
+Deep Learning
+EfficientNet-B0
+Transfer learning
+Class-balanced loss
+Adam optimizer
+Learning-rate scheduling
+Early stopping
+Validation-based model checkpointing
+Classical Machine Learning
+
+Vascular features are additionally investigated using classical machine learning models:
+
+RBF Support Vector Machine
+Gradient Boosting
+Extra Trees
+Random Forest
+Ensemble approaches
+
+This allows comparison between deep visual representations and quantitative vascular features.
+
+Explainable AI
+
+Medical AI systems should not only produce predictions; they should also provide insight into why a prediction was produced.
+
+CardioVision AI therefore includes an explainability pipeline based on Grad-CAM.
+
+Fundus Image
+     │
+     ▼
+Trained CNN
+     │
+     ▼
+Model Prediction
+     │
+     ▼
+Grad-CAM
+     │
+     ▼
+Activation Heatmap
+     │
+     ▼
+Important Retinal Regions
+
+The objective is to investigate whether model attention aligns with meaningful retinal structures rather than irrelevant image artifacts.
+
+Vascular Feature Analysis
+
+The project also investigates retinal vascular characteristics as structured features.
+
+Examples include:
+
+Vessel density
+Vessel calibre
+Vessel branching characteristics
+Vessel-related statistical measurements
+Quantitative retinal vascular descriptors
+
+These features can be evaluated independently and combined with deep image representations.
+
+Evaluation
+
+CardioVision AI evaluates models using multiple complementary metrics.
+
+Metric	Purpose
+Accuracy	Overall classification correctness
+Precision	Reliability of positive predictions
+Recall	Ability to identify positive cases
+F1 Score	Balance between precision and recall
+ROC-AUC	Ranking/discrimination performance
+Confusion Matrix	Class-specific error analysis
+Current Improved Image Model
 Metric	Score
-Accuracy	77.66%
-Precision	89.83%
-Recall	77.18%
-F1 Score	83.03%
-ROC-AUC	85.38%
-Confusion Matrix
-                 Predicted
-              Normal  Abnormal
-Actual Normal    67       18
-       Abnormal  47      159
+Accuracy	0.7766
+Precision	0.8983
+Recall	0.7718
+F1 Score	0.8303
+ROC-AUC	0.8538
+Validation-Based Threshold Analysis
 
-These are research-stage results and should not be interpreted as clinical performance.
+A validation-set threshold analysis was also performed to study the precision/recall trade-off.
 
-🧪 Research Approach
+The current research direction is to:
 
-CardioVision AI follows a controlled experimental workflow:
+Select the classification threshold using validation data.
+Lock the selected threshold.
+Evaluate it once on the held-out test set.
+Avoid using the test set repeatedly for optimization.
 
+This prevents test-set overfitting and produces a more defensible evaluation.
+
+Experimental Workflow
 Dataset Audit
-     ↓
+      │
+      ▼
 Patient-Level Split
-     ↓
-EfficientNet Baseline
-     ↓
+      │
+      ▼
+Baseline EfficientNet
+      │
+      ▼
 Model Improvement
-     ↓
-Validation & Evaluation
-     ↓
+      │
+      ▼
+Threshold Analysis
+      │
+      ▼
+Vascular Feature Analysis
+      │
+      ▼
+Multimodal Fusion
+      │
+      ▼
 Explainability
-     ↓
-Vessel-Aware Modeling
-     ↓
-Multimodal Learning
-     ↓
-External Validation
-
-Patient-level splitting is used to reduce the risk of data leakage when multiple images belong to the same patient.
-
-🛠️ Tech Stack
-Area	Technology
-Language	Python 3.11
-Deep Learning	PyTorch
-Vision	Torchvision, Timm
-Computer Vision	OpenCV
-ML & Evaluation	Scikit-learn
-Augmentation	Albumentations
-Research	Jupyter Notebook
-Development	VS Code
-Version Control	Git + GitHub
-Hardware	Apple Silicon / MPS
-📁 Project Structure
+      │
+      ▼
+Final Evaluation
+Project Structure
 cardiovision-ai/
 │
-├── data/              # Dataset & processed data
-├── docs/              # Research documentation
-├── experiments/       # Experiment artifacts
-├── models/            # Model checkpoints
-├── notebooks/         # Research experiments
-├── src/               # Core Python code
-├── tests/             # Tests
+├── app/
+│   └── Application / inference components
 │
-├── configs/           # Configuration files
+├── configs/
+│   └── baseline.yaml
+│
+├── data/
+│   ├── raw/
+│   │   └── china_fundus_cimt/
+│   ├── processed/
+│   └── external/
+│
+├── docs/
+│   ├── dataset/
+│   ├── DATASET_COMPARISON.md
+│   ├── DATASET_RESEARCH.md
+│   └── ROADMAP.md
+│
+├── experiments/
+│   └── Experiment outputs and records
+│
+├── models/
+│   └── Saved model checkpoints
+│
+├── notebooks/
+│   ├── 01_dataset_audit.ipynb
+│   ├── 02_model_improvement.ipynb
+│   ├── 03_gradcam_explainability.ipynb
+│   └── 04_vessel_analysis.ipynb
+│
+├── src/
+│   ├── data/
+│   ├── evaluation/
+│   ├── models/
+│   ├── config.py
+│   ├── inference.py
+│   └── seed.py
+│
+├── tests/
+│
 ├── requirements.txt
-├── environment.yml
-└── README.md
-🛣️ Roadmap
- Project foundation
- Dataset research & audit
- EfficientNet baseline
- Model improvement
- Robust threshold selection
- Grad-CAM explainability
- Retinal vessel segmentation
- Vessel feature extraction
- Multimodal learning
- Calibration & uncertainty
- External validation
- Clinical-style dashboard
-🎯 What Makes CardioVision AI Different?
+├── README.md
+└── .gitignore
+Research Experiments
 
-Instead of building only an image classifier, the project aims to combine:
+The project is organized as a sequence of reproducible experiments.
 
-👁️ Retinal Features + 🩸 Vascular Features + 🧬 Clinical Metadata
+Experiment	Objective
+Dataset Audit	Understand data distribution and quality
+Baseline Model	Establish initial performance
+Improved Model	Improve representation learning
+Threshold Optimization	Study precision/recall trade-offs
+Vascular Analysis	Evaluate retinal vascular descriptors
+Multimodal Fusion	Combine complementary information
+Grad-CAM	Investigate model interpretability
+Final Evaluation	Lock methodology and report results
+Technology Stack
+Category	Technology
+Language	Python
+Deep Learning	PyTorch
+Computer Vision	TorchVision
+Machine Learning	Scikit-learn
+Data Processing	Pandas / NumPy
+Visualization	Matplotlib
+Experiments	Jupyter Notebook
+Development	VS Code
+Version Control	Git / GitHub
+Why This Project Matters
 
-with:
+Cardiovascular disease remains a major global health challenge, while retinal fundus photography provides a relatively inexpensive and non-invasive method of observing microvascular structures.
 
-Explainability + Calibration + External Validation
+CardioVision AI investigates whether these retinal signals can support cardiovascular risk assessment through machine learning.
 
-The focus is on building a research-grade and interpretable medical AI pipeline, rather than simply maximizing one metric.
+The project is particularly focused on:
 
-⚠️ Medical Disclaimer
+Non-invasive screening
+Computer vision for healthcare
+Retinal vascular biomarkers
+Explainable medical AI
+Multimodal prediction
+Reproducible model evaluation
+Research Philosophy
 
-CardioVision AI is an academic/research prototype.
+The objective is not to artificially maximize a single metric.
 
-It is not a medical device and has not been clinically validated for patient care.
+Instead, the project prioritizes:
 
-It must not be used to diagnose disease, estimate individual clinical risk, recommend treatment, or replace a qualified medical professional.
+Generalization → Robust evaluation → Explainability → Reproducibility
 
-👨‍💻 Author
+A model that performs well on one dataset but fails on unseen data is not considered a successful medical AI system.
+
+Current Status
+Completed
+ Dataset acquisition and organization
+ Dataset audit
+ Patient-level train/validation/test split
+ EfficientNet-B0 baseline
+ Improved EfficientNet-B0 training
+ Class-balanced training
+ Validation threshold analysis
+ Vascular feature analysis
+ Classical ML experiments
+ Multimodal feature experiments
+ GitHub-based experiment tracking
+In Progress
+ Robust Grad-CAM analysis
+ Final multimodal architecture
+ Improved vascular feature extraction
+ Calibration and uncertainty analysis
+ Final held-out test evaluation
+ Research documentation
+
+Limitations
+
+This project is currently a research prototype and should not be interpreted as a clinical diagnostic system.
+
+Important limitations include:
+
+Dataset size and demographic coverage
+Potential dataset-specific bias
+Limited external validation
+Retrospective dataset design
+Possible confounding by age and other clinical variables
+Need for prospective clinical validation
+
+Clinical deployment would require substantially stronger validation, regulatory review, and evaluation across independent populations.
+
+Future Roadmap
+Current
+   │
+   ├── Deep Learning
+   │      └── EfficientNet improvements
+   │
+   ├── Vascular Analysis
+   │      └── Quantitative retinal features
+   │
+   ├── Explainability
+   │      └── Grad-CAM
+   │
+   └── Multimodal Learning
+          │
+          ▼
+     Better Feature Fusion
+          │
+          ▼
+     Calibration & Uncertainty
+          │
+          ▼
+     External Validation
+          │
+          ▼
+     Research-Grade Prototype
+Reproducibility
+
+The project is developed with reproducibility in mind.
+
+Key practices include:
+
+Fixed random seeds where appropriate
+Patient-level dataset splitting
+Version-controlled notebooks
+Saved model checkpoints
+Explicit experiment configurations
+Validation-based model selection
+Held-out test evaluation
+Disclaimer
+
+CardioVision AI is an academic/research project.
+
+It is not a medical device, does not provide medical diagnosis, and should not be used for clinical decision-making.
+
+All model results should be interpreted as experimental findings requiring further validation.
+
+Author
 
 Shimant Ranjan
-Computer Science & Engineering | Machine Learning | Computer Vision
 
-GitHub
-
-<div align="center">
-🫀 CardioVision AI
-
-AI × Retinal Imaging × Cardiovascular Research
-
-⭐ Star the repository if you find the project interesting.
-
-</div> ```
+Computer Science & Engineering
+Machine Learning • Computer Vision • Medical AI
